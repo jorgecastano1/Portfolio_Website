@@ -1,10 +1,823 @@
 <!DOCTYPE html>
-<html lang="'en">
-    <head>
-        <meta charset="'UTF-8">
-        <title>Jorge Castano's Portfolio</title>
-    </head>
-    <body>
-        <h1>Jorge Castano's Portfolio!</h1>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Portfolio | Mechanical Engineering Student</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #0d47a1;
+            --secondary: #f5f5f5;
+            --accent: #ff5722;
+            --text-dark: #333;
+            --text-light: #666;
+            --background: #ffffff;
+            --card-bg: #f9f9f9;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--background);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px var(--shadow);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Roboto Slab', serif;
+            font-weight: 500;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 10rem 0 6rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.2rem;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+
+        /* About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .about-image {
+            flex: 0 0 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        /* Projects Section */
+        .projects-section {
+            background-color: var(--secondary);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: var(--transition);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--shadow);
+        }
+
+        .project-image-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .image-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .image-nav:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .prev-btn {
+            left: 10px;
+        }
+
+        .next-btn {
+            right: 10px;
+        }
+
+        .image-counter {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        .project-title a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        .project-title a:hover {
+            color: var(--primary);
+        }
+
+        .project-description {
+            color: var(--text-light);
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            background-color: rgba(26, 115, 232, 0.1);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .project-link {
+            display: inline-block;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .project-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .project-link i {
+            margin-left: 5px;
+            transition: var(--transition);
+        }
+
+        .project-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            text-align: center;
+        }
+
+        .contact-intro {
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            color: var(--text-light);
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: var(--transition);
+            padding: 1.5rem;
+            border-radius: 10px;
+            width: 150px;
+        }
+
+        .contact-link:hover {
+            background-color: var(--secondary);
+            transform: translateY(-5px);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(26, 115, 232, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .contact-link span {
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #ddd;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .about-content {
+                flex-direction: column;
+            }
+
+            .about-image {
+                flex: 0 0 auto;
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                box-shadow: 0 5px 10px var(--shadow);
+                transform: translateY(-150%);
+                transition: var(--transition);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+            }
+
+            .nav-links li {
+                margin: 0.8rem 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 8rem 0 4rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-links {
+                gap: 1rem;
+            }
+
+            .contact-link {
+                width: 130px;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">Engineering Portfolio</div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Mechanical Engineering <span class="hero-highlight">Portfolio</span></h1>
+            <p>Senior mechanical engineering student specializing in innovative design, analysis, and prototyping. Passionate about turning complex problems into elegant engineering solutions.</p>
+            <a href="#projects" class="cta-button">View My Projects</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Mechanical Engineering Student">
+                </div>
+                <div class="about-text">
+                    <h3>Mechanical Engineering Senior</h3>
+                    <p>I am a dedicated mechanical engineering student with a passion for innovation, design, and problem-solving. My academic journey has equipped me with strong skills in CAD modeling, finite element analysis, thermodynamics, and materials science.</p>
+                    <p>I enjoy working on projects that challenge me to apply theoretical knowledge to real-world problems. From designing efficient energy systems to creating robust mechanical components, I thrive on the process of turning concepts into tangible solutions.</p>
+                    <p>My goal is to contribute to engineering advancements in renewable energy or aerospace industries, where I can leverage my skills to create sustainable and efficient technologies.</p>
+                    <a href="#contact" class="cta-button">Get In Touch</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <h2 class="section-title">My Engineering Projects</h2>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <div class="project-image-container">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Solar-Powered Vehicle" class="project-image active" data-project="1">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Solar-Powered Vehicle Design" class="project-image" data-project="1">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Solar-Powered Vehicle Testing" class="project-image" data-project="1">
+                        <button class="image-nav prev-btn" data-project="1"><i class="fas fa-chevron-left"></i></button>
+                        <button class="image-nav next-btn" data-project="1"><i class="fas fa-chevron-right"></i></button>
+                        <div class="image-counter"><span class="current-img">1</span>/<span class="total-img">3</span></div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title"><a href="project-details.html">Solar-Powered Electric Vehicle</a></h3>
+                        <p class="project-description">Designed and built a lightweight, solar-powered electric vehicle capable of reaching speeds up to 35 mph with a 50-mile range on a single charge.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">CAD Design</span>
+                            <span class="tech-tag">Finite Element Analysis</span>
+                            <span class="tech-tag">Solar Energy</span>
+                            <span class="tech-tag">Prototyping</span>
+                        </div>
+                        <a href="project-details.html" class="project-link">View Project Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <div class="project-image-container">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Wind Turbine Blade" class="project-image active" data-project="2">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Wind Turbine Analysis" class="project-image" data-project="2">
+                        <button class="image-nav prev-btn" data-project="2"><i class="fas fa-chevron-left"></i></button>
+                        <button class="image-nav next-btn" data-project="2"><i class="fas fa-chevron-right"></i></button>
+                        <div class="image-counter"><span class="current-img">1</span>/<span class="total-img">2</span></div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title"><a href="project-details.html">Optimized Wind Turbine Blade Design</a></h3>
+                        <p class="project-description">Developed and tested aerodynamically optimized wind turbine blades using computational fluid dynamics (CFD) to improve energy capture by 18%.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">CFD Analysis</span>
+                            <span class="tech-tag">Aerodynamics</span>
+                            <span class="tech-tag">3D Printing</span>
+                            <span class="tech-tag">Data Analysis</span>
+                        </div>
+                        <a href="project-details.html" class="project-link">View Project Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <div class="project-image-container">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Robotic Arm" class="project-image active" data-project="3">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Robotic Arm Assembly" class="project-image" data-project="3">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Robotic Arm Testing" class="project-image" data-project="3">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Robotic Arm Controller" class="project-image" data-project="3">
+                        <button class="image-nav prev-btn" data-project="3"><i class="fas fa-chevron-left"></i></button>
+                        <button class="image-nav next-btn" data-project="3"><i class="fas fa-chevron-right"></i></button>
+                        <div class="image-counter"><span class="current-img">1</span>/<span class="total-img">4</span></div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title"><a href="project-details.html">6-DOF Robotic Arm for Precision Tasks</a></h3>
+                        <p class="project-description">Designed and programmed a 6-degree-of-freedom robotic arm capable of performing precision assembly tasks with ±0.1mm accuracy.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Robotics</span>
+                            <span class="tech-tag">Kinematics</span>
+                            <span class="tech-tag">Microcontrollers</span>
+                            <span class="tech-tag">SolidWorks</span>
+                        </div>
+                        <a href="project-details.html" class="project-link">View Project Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card">
+                    <div class="project-image-container">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Heat Exchanger" class="project-image active" data-project="4">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Heat Exchanger Model" class="project-image" data-project="4">
+                        <button class="image-nav prev-btn" data-project="4"><i class="fas fa-chevron-left"></i></button>
+                        <button class="image-nav next-btn" data-project="4"><i class="fas fa-chevron-right"></i></button>
+                        <div class="image-counter"><span class="current-img">1</span>/<span class="total-img">2</span></div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title"><a href="project-details.html">Compact Heat Exchanger for HVAC Systems</a></h3>
+                        <p class="project-description">Engineered a compact, high-efficiency heat exchanger for HVAC applications, achieving 25% better thermal transfer compared to conventional designs.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Thermodynamics</span>
+                            <span class="tech-tag">Heat Transfer</span>
+                            <span class="tech-tag">Manufacturing</span>
+                            <span class="tech-tag">Testing</span>
+                        </div>
+                        <a href="project-details.html" class="project-link">View Project Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="contact-intro">I'm always interested in discussing engineering projects, research opportunities, or potential collaborations. Feel free to reach out through any of the channels below.</p>
+            <div class="contact-links">
+                <a href="mailto:student@engineeringportfolio.com" class="contact-link">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <span>Email</span>
+                </a>
+                <a href="https://linkedin.com/in/engineeringstudent" target="_blank" class="contact-link">
+                    <div class="contact-icon">
+                        <i class="fab fa-linkedin"></i>
+                    </div>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com/engineeringstudent" target="_blank" class="contact-link">
+                    <div class="contact-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://drive.google.com/file/d/example" target="_blank" class="contact-link">
+                    <div class="contact-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <span>Resume</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="copyright">
+                &copy; <span id="currentYear"></span> Engineering Portfolio. All rights reserved.
+            </div>
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Project image carousel functionality
+        document.querySelectorAll('.project-card').forEach(card => {
+            const projectId = card.querySelector('.project-image').dataset.project;
+            const images = card.querySelectorAll(`.project-image[data-project="${projectId}"]`);
+            const prevBtn = card.querySelector(`.prev-btn[data-project="${projectId}"]`);
+            const nextBtn = card.querySelector(`.next-btn[data-project="${projectId}"]`);
+            const currentSpan = card.querySelector('.current-img');
+            const totalSpan = card.querySelector('.total-img');
+            
+            let currentIndex = 0;
+            totalSpan.textContent = images.length;
+            
+            function showImage(index) {
+                // Hide all images
+                images.forEach(img => img.classList.remove('active'));
+                
+                // Show current image
+                images[index].classList.add('active');
+                currentSpan.textContent = index + 1;
+                currentIndex = index;
+            }
+            
+            // Next button click
+            nextBtn.addEventListener('click', () => {
+                let nextIndex = currentIndex + 1;
+                if (nextIndex >= images.length) nextIndex = 0;
+                showImage(nextIndex);
+            });
+            
+            // Previous button click
+            prevBtn.addEventListener('click', () => {
+                let prevIndex = currentIndex - 1;
+                if (prevIndex < 0) prevIndex = images.length - 1;
+                showImage(prevIndex);
+            });
+            
+            // Auto-advance images every 5 seconds
+            setInterval(() => {
+                let nextIndex = currentIndex + 1;
+                if (nextIndex >= images.length) nextIndex = 0;
+                showImage(nextIndex);
+            }, 5000);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                document.querySelector('nav').style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+                document.querySelector('nav').style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+            } else {
+                document.querySelector('nav').style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                document.querySelector('nav').style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            }
+        });
+    </script>
+</body>
 </html>
