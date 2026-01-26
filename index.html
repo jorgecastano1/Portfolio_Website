@@ -331,6 +331,47 @@
             gap: 0.5rem;
             margin-bottom: 1.5rem;
         }
+        /* Add smooth fade transition for project images */
+        .project-image-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+
+        .project-image.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        /* Keep your existing image-nav styles, but ensure proper z-index */
+        .image-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 20; /* Increased z-index to be above images */
+        }
 
         .tech-tag {
             background-color: rgba(26, 115, 232, 0.1);
@@ -534,7 +575,7 @@
     <!-- Navigation -->
     <nav>
         <div class="container nav-container">
-            <div class="logo">Engineering Portfolio</div>
+            <div class="logo">Jorge Castano</div>
             <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
             </button>
@@ -550,8 +591,8 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="container">
-            <h1>Mechanical Engineering <span class="hero-highlight">Portfolio</span></h1>
-            <p>Senior mechanical engineering student specializing in innovative design, analysis, and prototyping. Passionate about turning complex problems into elegant engineering solutions.</p>
+            <h1>Mechanical Engineering <span class="hero-highlight">Projects</span></h1>
+            <p>Balancing Energy, Simulating Stress</p>
             <a href="#projects" class="cta-button">View My Projects</a>
         </div>
     </section>
@@ -562,13 +603,15 @@
             <h2 class="section-title">About Me</h2>
             <div class="about-content">
                 <div class="about-image">
-                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Mechanical Engineering Student">
+                    <img src="images/Professional Headshot.jpeg" alt="Jorge Castano">
                 </div>
                 <div class="about-text">
-                    <h3>Mechanical Engineering Senior</h3>
-                    <p>I am a dedicated mechanical engineering student with a passion for innovation, design, and problem-solving. My academic journey has equipped me with strong skills in CAD modeling, finite element analysis, thermodynamics, and materials science.</p>
-                    <p>I enjoy working on projects that challenge me to apply theoretical knowledge to real-world problems. From designing efficient energy systems to creating robust mechanical components, I thrive on the process of turning concepts into tangible solutions.</p>
-                    <p>My goal is to contribute to engineering advancements in renewable energy or aerospace industries, where I can leverage my skills to create sustainable and efficient technologies.</p>
+                    <h3>Passion-Driven Engineering</h3>
+                    <p>I am a current Mechanical Engineering senior studying at Carnegie Mellon University.
+                        I have experience in Mechanical Design and ANSYS Finite Element Analysis for Thermal and Structural Design Optimization.
+                        I have experience in engineering data analysis in Python, C, and MATLAB.
+                        I enjoy learning through projects, feel free to look at them below!
+                    </p>
                     <a href="#contact" class="cta-button">Get In Touch</a>
                 </div>
             </div>
@@ -578,98 +621,73 @@
     <!-- Projects Section -->
     <section id="projects" class="projects-section">
         <div class="container">
-            <h2 class="section-title">My Engineering Projects</h2>
+            <h2 class="section-title">Projects</h2>
             <div class="projects-grid">
                 <!-- Project 1 -->
                 <div class="project-card">
                     <div class="project-image-container">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Solar-Powered Vehicle" class="project-image active" data-project="1">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Solar-Powered Vehicle Design" class="project-image" data-project="1">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Solar-Powered Vehicle Testing" class="project-image" data-project="1">
+                        <img src="images/ProjectPics/pj1_1.png" alt="Website 1" class="project-image active" data-project="1">
+                        <img src="images/ProjectPics/pj1_2.png" alt="Github" class="project-image" data-project="1">
+                        <img src="images/ProjectPics/pj1_3.png" alt="Contact Section" class="project-image" data-project="1">
                         <button class="image-nav prev-btn" data-project="1"><i class="fas fa-chevron-left"></i></button>
                         <button class="image-nav next-btn" data-project="1"><i class="fas fa-chevron-right"></i></button>
                         <div class="image-counter"><span class="current-img">1</span>/<span class="total-img">3</span></div>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title"><a href="project-details.html">Solar-Powered Electric Vehicle</a></h3>
-                        <p class="project-description">Designed and built a lightweight, solar-powered electric vehicle capable of reaching speeds up to 35 mph with a 50-mile range on a single charge.</p>
+                        <h3 class="project-title"><a href="project-details.html">Portfolio Website</a></h3>
+                        <p class="project-description">Using git version control, deployed a website through Github Pages, managed through local HTML, CSS, and JavaScript files.</p>
                         <div class="project-tech">
-                            <span class="tech-tag">CAD Design</span>
-                            <span class="tech-tag">Finite Element Analysis</span>
-                            <span class="tech-tag">Solar Energy</span>
-                            <span class="tech-tag">Prototyping</span>
+                            <span class="tech-tag">HTML</span>
+                            <span class="tech-tag">CSS</span>
+                            <span class="tech-tag">Data Structures</span>
                         </div>
-                        <a href="project-details.html" class="project-link">View Project Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
 
                 <!-- Project 2 -->
                 <div class="project-card">
                     <div class="project-image-container">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Wind Turbine Blade" class="project-image active" data-project="2">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Wind Turbine Analysis" class="project-image" data-project="2">
+                        <img src="images/ProjectPics/pj2_2.webp" alt="PCB 1 Thermal Simulation" class="project-image active" data-project="2">
+                        <img src="images/ProjectPics/pj2_2.webp" alt="PCB 2 Thermal Simulation" class="project-image" data-project="2">
                         <button class="image-nav prev-btn" data-project="2"><i class="fas fa-chevron-left"></i></button>
                         <button class="image-nav next-btn" data-project="2"><i class="fas fa-chevron-right"></i></button>
                         <div class="image-counter"><span class="current-img">1</span>/<span class="total-img">2</span></div>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title"><a href="project-details.html">Optimized Wind Turbine Blade Design</a></h3>
-                        <p class="project-description">Developed and tested aerodynamically optimized wind turbine blades using computational fluid dynamics (CFD) to improve energy capture by 18%.</p>
+                        <h3 class="project-title"><a href="project-details.html">PCB Thermal Optimization</a></h3>
+                        <p class="project-description">Modeled and performed Temperature and Heat Flux Optimization of PCB using ANSYS Mechanical and Workbench. Reduced max Temperature of PCB by 35%. Reduced Heat Flux through critical components by 57%.
+                        </p>
                         <div class="project-tech">
-                            <span class="tech-tag">CFD Analysis</span>
-                            <span class="tech-tag">Aerodynamics</span>
-                            <span class="tech-tag">3D Printing</span>
+                            <span class="tech-tag">Thermal Analysis</span>
                             <span class="tech-tag">Data Analysis</span>
+                            <span class="tech-tag">Electronics</span>
+                            <span class="tech-tag">Multi-Physics Simulation</span>
                         </div>
-                        <a href="project-details.html" class="project-link">View Project Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
 
                 <!-- Project 3 -->
                 <div class="project-card">
                     <div class="project-image-container">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Robotic Arm" class="project-image active" data-project="3">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Robotic Arm Assembly" class="project-image" data-project="3">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Robotic Arm Testing" class="project-image" data-project="3">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Robotic Arm Controller" class="project-image" data-project="3">
+                        <img src="images/ProjectPics/pj3_1.png" alt="Block Diagram" class="project-image active" data-project="3">
+                        <img src="images/ProjectPics/pj3_2.png" alt="PID Graph" class="project-image" data-project="3">
                         <button class="image-nav prev-btn" data-project="3"><i class="fas fa-chevron-left"></i></button>
                         <button class="image-nav next-btn" data-project="3"><i class="fas fa-chevron-right"></i></button>
-                        <div class="image-counter"><span class="current-img">1</span>/<span class="total-img">4</span></div>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title"><a href="project-details.html">6-DOF Robotic Arm for Precision Tasks</a></h3>
-                        <p class="project-description">Designed and programmed a 6-degree-of-freedom robotic arm capable of performing precision assembly tasks with ±0.1mm accuracy.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Robotics</span>
-                            <span class="tech-tag">Kinematics</span>
-                            <span class="tech-tag">Microcontrollers</span>
-                            <span class="tech-tag">SolidWorks</span>
-                        </div>
-                        <a href="project-details.html" class="project-link">View Project Details <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-
-                <!-- Project 4 -->
-                <div class="project-card">
-                    <div class="project-image-container">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Heat Exchanger" class="project-image active" data-project="4">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Heat Exchanger Model" class="project-image" data-project="4">
-                        <button class="image-nav prev-btn" data-project="4"><i class="fas fa-chevron-left"></i></button>
-                        <button class="image-nav next-btn" data-project="4"><i class="fas fa-chevron-right"></i></button>
                         <div class="image-counter"><span class="current-img">1</span>/<span class="total-img">2</span></div>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title"><a href="project-details.html">Compact Heat Exchanger for HVAC Systems</a></h3>
-                        <p class="project-description">Engineered a compact, high-efficiency heat exchanger for HVAC applications, achieving 25% better thermal transfer compared to conventional designs.</p>
+                        <h3 class="project-title"><a href="project-details.html">Motor Controller Simulation</a></h3>
+                        <p class="project-description">
+                            Implemented a fault-tolerant motor controller in C with documented loop invariants. Designed a real-time telemetry system using circular buffers and lossless compression </p>
                         <div class="project-tech">
-                            <span class="tech-tag">Thermodynamics</span>
-                            <span class="tech-tag">Heat Transfer</span>
-                            <span class="tech-tag">Manufacturing</span>
-                            <span class="tech-tag">Testing</span>
+                            <span class="tech-tag">Data Structures</span>
+                            <span class="tech-tag">Real-Time Monitoring</span>
+                            <span class="tech-tag">STM32 Protocol</span>
+                            <span class="tech-tag">Simulation & Data Analysis</span>
                         </div>
-                        <a href="project-details.html" class="project-link">View Project Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
+                
             </div>
         </div>
     </section>
@@ -680,25 +698,25 @@
             <h2 class="section-title">Get In Touch</h2>
             <p class="contact-intro">I'm always interested in discussing engineering projects, research opportunities, or potential collaborations. Feel free to reach out through any of the channels below.</p>
             <div class="contact-links">
-                <a href="mailto:student@engineeringportfolio.com" class="contact-link">
+                <a href="mailto:jorgecastanor@gmail.com" class="contact-link">
                     <div class="contact-icon">
                         <i class="fas fa-envelope"></i>
                     </div>
                     <span>Email</span>
                 </a>
-                <a href="https://linkedin.com/in/engineeringstudent" target="_blank" class="contact-link">
+                <a href="https://www.linkedin.com/in/jorge-castano-26a908179/" target="_blank" class="contact-link">
                     <div class="contact-icon">
                         <i class="fab fa-linkedin"></i>
                     </div>
                     <span>LinkedIn</span>
                 </a>
-                <a href="https://github.com/engineeringstudent" target="_blank" class="contact-link">
+                <a href="https://github.com/jorgecastano1" target="_blank" class="contact-link">
                     <div class="contact-icon">
                         <i class="fab fa-github"></i>
                     </div>
                     <span>GitHub</span>
                 </a>
-                <a href="https://drive.google.com/file/d/example" target="_blank" class="contact-link">
+                <a href="resume.pdf" target="_blank" class="contact-link">
                     <div class="contact-icon">
                         <i class="fas fa-file-pdf"></i>
                     </div>
@@ -712,7 +730,7 @@
     <footer>
         <div class="container footer-content">
             <div class="copyright">
-                &copy; <span id="currentYear"></span> Engineering Portfolio. All rights reserved.
+                &copy; <span id="currentYear"></span> Jorge Castano. All rights reserved.
             </div>
             <div class="footer-links">
                 <a href="#home">Home</a>
@@ -724,100 +742,186 @@
     </footer>
 
     <script>
-        // Mobile menu toggle
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinks = document.querySelector('.nav-links');
+    // Mobile menu toggle
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
 
-        mobileMenuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
+    mobileMenuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
+            ? '<i class="fas fa-times"></i>' 
+            : '<i class="fas fa-bars"></i>';
+    });
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
         });
+    });
 
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
-
-        // Project image carousel functionality
-        document.querySelectorAll('.project-card').forEach(card => {
-            const projectId = card.querySelector('.project-image').dataset.project;
-            const images = card.querySelectorAll(`.project-image[data-project="${projectId}"]`);
-            const prevBtn = card.querySelector(`.prev-btn[data-project="${projectId}"]`);
-            const nextBtn = card.querySelector(`.next-btn[data-project="${projectId}"]`);
-            const currentSpan = card.querySelector('.current-img');
-            const totalSpan = card.querySelector('.total-img');
-            
-            let currentIndex = 0;
+    // Project image carousel with smooth fade transitions
+    document.querySelectorAll('.project-card').forEach(card => {
+        // Get elements for this specific card
+        const images = Array.from(card.querySelectorAll('.project-image'));
+        const prevBtn = card.querySelector('.prev-btn');
+        const nextBtn = card.querySelector('.next-btn');
+        const currentSpan = card.querySelector('.current-img');
+        const totalSpan = card.querySelector('.total-img');
+        
+        // Initialize current index for THIS card
+        let currentIndex = 0;
+        let isTransitioning = false; // Prevent rapid clicks during transition
+        const transitionDuration = 500; // Match CSS transition time (0.5s = 500ms)
+        
+        if (totalSpan) {
             totalSpan.textContent = images.length;
+        }
+        
+        // Function to show specific image with fade
+        const showImage = (index) => {
+            // Prevent multiple transitions at once
+            if (isTransitioning) return;
             
-            function showImage(index) {
-                // Hide all images
-                images.forEach(img => img.classList.remove('active'));
-                
-                // Show current image
-                images[index].classList.add('active');
-                currentSpan.textContent = index + 1;
-                currentIndex = index;
+            // Validate index
+            if (index < 0 || index >= images.length) return;
+            
+            // Don't transition to same image
+            if (index === currentIndex) return;
+            
+            isTransitioning = true;
+            
+            // Get current and next image elements
+            const currentImage = images[currentIndex];
+            const nextImage = images[index];
+            
+            // Start fade out current image
+            if (currentImage) {
+                currentImage.classList.remove('active');
             }
             
-            // Next button click
-            nextBtn.addEventListener('click', () => {
-                let nextIndex = currentIndex + 1;
-                if (nextIndex >= images.length) nextIndex = 0;
-                showImage(nextIndex);
-            });
+            // Set next image to visible and start fade in
+            nextImage.classList.add('active');
             
-            // Previous button click
-            prevBtn.addEventListener('click', () => {
-                let prevIndex = currentIndex - 1;
-                if (prevIndex < 0) prevIndex = images.length - 1;
-                showImage(prevIndex);
-            });
+            // Update counter
+            if (currentSpan) {
+                currentSpan.textContent = index + 1;
+            }
             
-            // Auto-advance images every 5 seconds
-            setInterval(() => {
-                let nextIndex = currentIndex + 1;
-                if (nextIndex >= images.length) nextIndex = 0;
-                showImage(nextIndex);
-            }, 5000);
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
+            // Update currentIndex after transition completes
+            setTimeout(() => {
+                currentIndex = index;
+                isTransitioning = false;
+            }, transitionDuration);
+        };
+        
+        // Function to go to next image
+        const goToNext = () => {
+            let nextIndex = currentIndex + 1;
+            if (nextIndex >= images.length) {
+                nextIndex = 0;
+            }
+            showImage(nextIndex);
+        };
+        
+        // Function to go to previous image
+        const goToPrev = () => {
+            let prevIndex = currentIndex - 1;
+            if (prevIndex < 0) {
+                prevIndex = images.length - 1;
+            }
+            showImage(prevIndex);
+        };
+        
+        // Initialize - show first image
+        if (images.length > 0) {
+            images[0].classList.add('active');
+            if (currentSpan) {
+                currentSpan.textContent = '1';
+            }
+        }
+        
+        // Next button click
+        if (nextBtn) {
+            nextBtn.addEventListener('click', goToNext);
+        }
+        
+        // Previous button click
+        if (prevBtn) {
+            prevBtn.addEventListener('click', goToPrev);
+        }
+        
+        // Auto-advance every 5 seconds (only if multiple images)
+        if (images.length > 1) {
+            let autoAdvanceInterval;
+            
+            // Start auto-advance
+            const startAutoAdvance = () => {
+                autoAdvanceInterval = setInterval(goToNext, 5000);
+            };
+            
+            // Pause auto-advance on hover
+            card.addEventListener('mouseenter', () => {
+                if (autoAdvanceInterval) {
+                    clearInterval(autoAdvanceInterval);
+                    autoAdvanceInterval = null;
                 }
             });
-        });
-
-        // Set current year in footer
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-        // Add scroll effect to navigation
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                document.querySelector('nav').style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
-                document.querySelector('nav').style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
-            } else {
-                document.querySelector('nav').style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-                document.querySelector('nav').style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            
+            // Resume auto-advance when mouse leaves
+            card.addEventListener('mouseleave', startAutoAdvance);
+            
+            // Start the auto-advance
+            startAutoAdvance();
+        }
+        
+        // Optional: Add keyboard navigation
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                goToPrev();
+            } else if (e.key === 'ArrowRight') {
+                goToNext();
             }
         });
+        
+        // Make card focusable for keyboard navigation
+        card.setAttribute('tabindex', '0');
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Add scroll effect to navigation
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+            document.querySelector('nav').style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+            document.querySelector('nav').style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+        } else {
+            document.querySelector('nav').style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+            document.querySelector('nav').style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+        }
+    });
     </script>
+
+    
 </body>
 </html>
