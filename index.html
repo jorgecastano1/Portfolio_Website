@@ -257,7 +257,46 @@
             object-fit: cover;
             transition: var(--transition);
         }
+        
+        .project-content {
+    display: flex;
+    flex-direction: column;
+}
 
+        .project-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #ffcc00, #ff9900);
+            color: #1a1a2e;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        /* Alternative color for GitHub link */
+        .project-link.github-link {
+            background: linear-gradient(135deg, #333, #555);
+            color: white;
+        }
+
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-link.github-link:hover {
+            background: linear-gradient(135deg, #444, #666);
+        }
         .image-nav {
             position: absolute;
             top: 50%;
@@ -687,25 +726,36 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Project 2 -->
+                <!-- Project 4 -->
                 <div class="project-card">
                     <div class="project-image-container">
-                        <img src="images/CrossyRoadPic.png" alt="PCB 1 Thermal Simulation" class="project-image active" data-project="2">
-                        <button class="image-nav prev-btn" data-project="2"><i class="fas fa-chevron-left"></i></button>
-                        <button class="image-nav next-btn" data-project="2"><i class="fas fa-chevron-right"></i></button>
+                        <img src="images/CrossyRoadPic.png" alt="Crossy Road Game" class="project-image active" data-project="4">
+                        <button class="image-nav prev-btn" data-project="4"><i class="fas fa-chevron-left"></i></button>
+                        <button class="image-nav next-btn" data-project="4"><i class="fas fa-chevron-right"></i></button>
                         <div class="image-counter"><span class="current-img">1</span>/<span class="total-img">1</span></div>
                     </div>
                     <div class="project-content">
                         <h3 class="project-title"><a href="project-details.html">1 Hour Crossy Road Challenge</a></h3>
-                        <p class="project-description">Attempted to create Crossy Road Game with the aid of AI in under an hour. Received a working HTML file with a game that does not load.
-                        </p>
-                        <a href="https://jorgecastano1.github.io/113_CrossyRoad/" 
-                        class="project-link" 
-                        target="_blank" 
-                        rel="noopener noreferrer">
-                        <i class="fas fa-gamepad"></i> Play Game
-                        </a>
+                        <p class="project-description">Attempted to create Crossy Road Game with the aid of AI in under an hour. Received a working HTML file with a game that does not load.</p>
+                        
+                        <div class="project-links">
+                            <!-- Game Link -->
+                            <a href="https://jorgecastano1.github.io/113_CrossyRoad/" 
+                            class="project-link" 
+                            target="_blank" 
+                            rel="noopener noreferrer">
+                            <i class="fas fa-gamepad"></i> Play Game
+                            </a>
+                            
+                            <!-- GitHub Link -->
+                            <a href="https://github.com/jorgecastano1/113_CrossyRoad/" 
+                            class="project-link github-link" 
+                            target="_blank" 
+                            rel="noopener noreferrer">
+                            <i class="fab fa-github"></i> View Code
+                            </a>
+                        </div>
+                        
                         <div class="project-tech">
                             <span class="tech-tag">Game Design</span>
                             <span class="tech-tag">Crossy Road</span>
