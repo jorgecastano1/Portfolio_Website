@@ -12,17 +12,20 @@
             padding: 0;
             box-sizing: border-box;
         }
+        
 
         :root {
-            --primary: #1a73e8;
-            --primary-dark: #0d47a1;
-            --secondary: #f5f5f5;
-            --accent: #ff5722;
-            --text-dark: #333;
-            --text-light: #666;
+            --primary: #0d3b66;
+            --primary-dark: #1a5490;
+            --secondary: #faf0ca;
+            --accent: #f95738;
+            --highlight: #f4d35e;
+            --highlight-secondary: #ee964b;
+            --text-dark: #0d3b66;
+            --text-light: #5a6b7f;
             --background: #ffffff;
-            --card-bg: #f9f9f9;
-            --shadow: rgba(0, 0, 0, 0.1);
+            --card-bg: #faf8f0;
+            --shadow: rgba(13, 59, 102, 0.12);
             --transition: all 0.3s ease;
         }
 
@@ -115,7 +118,7 @@
         /* Hero Section */
         .hero {
             padding: 10rem 0 6rem;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #faf0ca 0%, #f4d35e 100%);
             text-align: center;
         }
 
@@ -206,6 +209,23 @@
             transform: scale(1.05);
         }
 
+        /* Scroll Animation Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Apply animation to project cards */
+        .project-card.animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
         .about-text {
             flex: 1;
         }
@@ -238,6 +258,24 @@
             overflow: hidden;
             box-shadow: 0 5px 15px var(--shadow);
             transition: var(--transition);
+            opacity: 0;
+        }
+
+        /* Staggered animation delays */
+        .project-card:nth-child(1).animate-in {
+            animation-delay: 0s;
+        }
+
+        .project-card:nth-child(2).animate-in {
+            animation-delay: 0.1s;
+        }
+
+        .project-card:nth-child(3).animate-in {
+            animation-delay: 0.2s;
+        }
+
+        .project-card:nth-child(4).animate-in {
+            animation-delay: 0.3s;
         }
 
         .project-card:hover {
@@ -274,8 +312,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(135deg, #ffcc00, #ff9900);
-            color: #1a1a2e;
+            background: linear-gradient(135deg, #f4d35e, #ee964b);
+            color: #0d3b66;
             padding: 8px 16px;
             border-radius: 5px;
             text-decoration: none;
@@ -285,17 +323,17 @@
 
         /* Alternative color for GitHub link */
         .project-link.github-link {
-            background: linear-gradient(135deg, #333, #555);
-            color: white;
+            background: linear-gradient(135deg, #0d3b66, #1a5490);
+            color: #faf0ca;
         }
 
         .project-link:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(249, 87, 56, 0.3);
         }
 
         .project-link.github-link:hover {
-            background: linear-gradient(135deg, #444, #666);
+            background: linear-gradient(135deg, #1a5490, #2670b8);
         }
         .image-nav {
             position: absolute;
@@ -497,8 +535,8 @@
 
         /* Footer */
         footer {
-            background-color: #222;
-            color: #ddd;
+            background-color: #0d3b66;
+            color: #faf0ca;
             padding: 2rem 0;
             text-align: center;
         }
@@ -519,13 +557,13 @@
         }
 
         .footer-links a {
-            color: #ddd;
+            color: #faf0ca;
             text-decoration: none;
             transition: var(--transition);
         }
 
         .footer-links a:hover {
-            color: white;
+            color: #f4d35e;
         }
 
         /* Responsive Design */
@@ -807,7 +845,7 @@
     <footer>
         <div class="container footer-content">
             <div class="copyright">
-                &copy; <span id="currentYear"></span> Jorge Castano. All rights reserved.
+                &copy; <span id="currentYear"></span> Jorge Castano. All rights reserved. Implemented with the use of Github Copilot and Deepseek.
             </div>
             <div class="footer-links">
                 <a href="#home">Home</a>
@@ -964,6 +1002,26 @@
         
         // Make card focusable for keyboard navigation
         card.setAttribute('tabindex', '0');
+    });
+
+    // Intersection Observer for Scroll Animation
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all project cards
+    document.querySelectorAll('.project-card').forEach(card => {
+        observer.observe(card);
     });
 
     // Smooth scrolling for navigation links
