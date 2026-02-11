@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethereum Explorer | Jorge Castano</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg:         #080c10;
+            --bg-card:    #0d1117;
+            --bg-panel:   #111820;
+            --border:     #1e2d3d;
+            --green:      #00ff88;
+            --green-dim:  #00cc6a;
+            --green-glow: rgba(0, 255, 136, 0.15);
+            --cyan:       #00d4ff;
+            --cyan-dim:   #00a8cc;
+            --yellow:     #f4d35e;
+            --red:        #ff4d6d;
+            --text:       #c9d1d9;
+            --text-dim:   #6e7f8d;
+            --mono:       'Share Tech Mono', monospace;
+            --sans:       'Rajdhani', sans-serif;
+        }
+
+        body {
+            font-family: var(--sans);
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Scanline overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.03) 2px,
+                rgba(0,0,0,0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Grid background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            background: rgba(8, 12, 16, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: var(--mono);
+            font-size: 1rem;
+            color: var(--green);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-logo span { color: var(--text-dim); }
+
+        .nav-back {
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .nav-back:hover { color: var(--green); }
+
+        /* ── HERO ── */
+        .hero {
+            padding: 7rem 2rem 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-label {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--green);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero h1 {
+            font-family: var(--sans);
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.05em;
+            line-height: 1.1;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero h1 span { color: var(--green); }
+
+        .hero-sub {
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+
+        .hero-sub .blink {
+            animation: blink 1s step-end infinite;
+            color: var(--green);
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* ── MODE TABS ── */
+        .mode-tabs {
+            max-width: 1100px;
+            margin: 0 auto 2rem;
+            padding: 0 2rem;
+            display: flex;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tab-btn {
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            padding: 0.6rem 1.5rem;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-dim);
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+            letter-spacing: 0.05em;
+        }
+
+        .tab-btn.active {
+            border-color: var(--green);
+            color: var(--green);
+            background: var(--green-glow);
+            box-shadow: 0 0 12px var(--green-glow);
+        }
+
+        .tab-btn:hover:not(.active) {
+            border-color: #2e4a5e;
+            color: var(--text);
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── PANEL ── */
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── INPUT ROW ── */
+        .input-row {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-wrap {
+            flex: 1;
+            position: relative;
+        }
+
+        .input-wrap i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .eth-input {
+            width: 100%;
+            padding: 0.85rem 1rem 0.85rem 2.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .eth-input::placeholder { color: var(--text-dim); }
+
+        .eth-input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px var(--green-glow);
+        }
+
+        .search-btn {
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            padding: 0.85rem 1.75rem;
+            background: var(--green);
+            color: #080c10;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background: var(--green-dim);
+            box-shadow: 0 0 20px var(--green-glow);
+        }
+
+        .search-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ── ERROR ── */
+        .error-msg {
+            display: none;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            color: var(--red);
+            background: rgba(255, 77, 109, 0.08);
+            border: 1px solid rgba(255, 77, 109, 0.3);
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .error-msg.show { display: block; }
+
+        /* ── LOADING ── */
+        .loading {
+            display: none;
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            color: var(--green);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .loading.show { display: block; }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%   { content: ''; }
+            25%  { content: '.'; }
+            50%  { content: '..'; }
+            75%  { content: '...'; }
+        }
+
+        /* ── RESULTS ── */
+        .results { display: none; }
+        .results.show { display: block; }
+
+        /* ── STAT GRID ── */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.2rem 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .stat-card:hover { border-color: #2e4a5e; }
+
+        .stat-label {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: var(--mono);
+            font-size: 1.3rem;
+            color: var(--green);
+            font-weight: 400;
+            word-break: break-all;
+        }
+
+        .stat-value.cyan  { color: var(--cyan); }
+        .stat-value.white { color: #fff; font-size: 1.1rem; }
+        .stat-value.yellow { color: var(--yellow); }
+
+        /* ── SECTION HEADER ── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1.75rem 0 1rem;
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── TX TABLE ── */
+        .tx-table-wrap {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .tx-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--mono);
+            font-size: 0.78rem;
+        }
+
+        .tx-table th {
+            background: var(--bg-panel);
+            color: var(--text-dim);
+            text-align: left;
+            padding: 0.75rem 1rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tx-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(30,45,61,0.6);
+            color: var(--text);
+            vertical-align: middle;
+        }
+
+        .tx-table tr:last-child td { border-bottom: none; }
+
+        .tx-table tr:hover td { background: rgba(0,255,136,0.03); }
+
+        .tx-hash {
+            color: var(--cyan);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .tx-hash:hover { color: var(--green); text-decoration: underline; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-in  { background: rgba(0,255,136,0.12); color: var(--green); }
+        .badge-out { background: rgba(0,212,255,0.12); color: var(--cyan); }
+
+        .addr-short { color: var(--text-dim); }
+
+        /* ── TOKEN CHIPS ── */
+        .token-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .token-chip {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.6rem 1rem;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+        }
+
+        .token-chip .t-symbol { color: var(--yellow); font-weight: 700; }
+        .token-chip .t-bal    { color: var(--text); margin-left: 0.5rem; }
+
+        .no-tokens {
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            padding: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        /* ── TX DETAIL CARDS ── */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-row {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.1rem 1.25rem;
+        }
+
+        .detail-key {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .detail-val {
+            font-family: var(--mono);
+            font-size: 0.82rem;
+            color: var(--text);
+            word-break: break-all;
+        }
+
+        .detail-val.green  { color: var(--green); }
+        .detail-val.cyan   { color: var(--cyan); }
+        .detail-val.yellow { color: var(--yellow); }
+        .detail-val.red    { color: var(--red); }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 3px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .status-success { background: rgba(0,255,136,0.12); color: var(--green); }
+        .status-failed  { background: rgba(255,77,109,0.12); color: var(--red); }
+        .status-pending { background: rgba(244,211,94,0.12); color: var(--yellow); }
+
+        .input-data-box {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1rem;
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            word-break: break-all;
+            line-height: 1.6;
+        }
+
+        /* ── FOOTER ── */
+        .page-footer {
+            text-align: center;
+            padding: 2rem;
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-footer a {
+            color: var(--green);
+            text-decoration: none;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.9rem; }
+            .input-row { flex-direction: column; }
+            .tx-table th:nth-child(3),
+            .tx-table td:nth-child(3),
+            .tx-table th:nth-child(4),
+            .tx-table td:nth-child(4) { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav>
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">jorge<span>.castano</span></a>
+            <a href="index.html#projects" class="nav-back">
+                <i class="fas fa-arrow-left"></i> back to projects
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-label">// live demo</div>
+        <h1>Ethereum <span>Explorer</span></h1>
+        <div class="hero-sub">mainnet &nbsp;|&nbsp; powered by etherscan api &nbsp;<span class="blink">█</span></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="mode-tabs">
+        <button class="tab-btn active" onclick="switchTab('wallet')">
+            <i class="fas fa-wallet"></i>&nbsp; Wallet Lookup
+        </button>
+        <button class="tab-btn" onclick="switchTab('transaction')">
+            <i class="fas fa-exchange-alt"></i>&nbsp; Transaction Lookup
+        </button>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- ── WALLET PANEL ── -->
+        <div id="panel-wallet" class="panel active">
+
+            <div class="input-row">
+                <div class="input-wrap">
+                    <i class="fas fa-search"></i>
+                    <input
+                        id="wallet-input"
+                        class="eth-input"
+                        type="text"
+                        placeholder="Enter wallet address  (0x...)"
+                        maxlength="42"
+                        autocomplete="off"
+                        spellcheck="false"
+                    />
+                </div>
+                <button class="search-btn" id="wallet-btn" onclick="lookupWallet()">
+                    QUERY
+                </button>
+            </div>
+
+            <div id="wallet-error" class="error-msg"></div>
+            <div id="wallet-loading" class="loading">
+                <span class="loading-dots">fetching blockchain data</span>
+            </div>
+
+            <div id="wallet-results" class="results">
+
+                <!-- Stats -->
+                <div class="stat-grid" id="wallet-stats"></div>
+
+                <!-- Recent Transactions -->
+                <div class="section-header">recent transactions</div>
+                <div class="tx-table-wrap">
+                    <table class="tx-table">
+                        <thead>
+                            <tr>
+                                <th>Hash</th>
+                                <th>Direction</th>
+                                <th>Value (ETH)</th>
+                                <th>Block</th>
+                                <th>Age</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tx-tbody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Token Balances -->
+                <div class="section-header">token balances</div>
+                <div id="token-grid" class="token-grid"></div>
+
+            </div>
+        </div>
+
+        <!-- ── TRANSACTION PANEL ── -->
+        <div id="panel-transaction" class="panel">
+
+            <div class="input-row">
+                <div class="input-wrap">
+                    <i class="fas fa-search"></i>
+                    <input
+                        id="tx-input"
+                        class="eth-input"
+                        type="text"
+                        placeholder="Enter transaction hash  (0x...)"
+                        maxlength="66"
+                        autocomplete="off"
+                        spellcheck="false"
+                    />
+                </div>
+                <button class="search-btn" id="tx-btn" onclick="lookupTransaction()">
+                    QUERY
+                </button>
+            </div>
+
+            <div id="tx-error" class="error-msg"></div>
+            <div id="tx-loading" class="loading">
+                <span class="loading-dots">fetching transaction data</span>
+            </div>
+
+            <div id="tx-results" class="results">
+                <div id="tx-detail-grid" class="detail-grid"></div>
+                <div class="section-header">input data</div>
+                <div id="tx-input-data" class="input-data-box"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="page-footer">
+        built by <a href="index.html">jorge castano</a> &nbsp;·&nbsp;
+        data via <a href="https://etherscan.io" target="_blank">etherscan.io</a> &nbsp;·&nbsp;
+        backend on <a href="https://render.com" target="_blank">render</a>
+    </div>
+
+    <script>
+        // ── CONFIG ──────────────────────────────────────────────────
+        const BACKEND = 'https://etherscanbackend.onrender.com';
+
+        // ── TAB SWITCHING ────────────────────────────────────────────
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach((b, i) => {
+                b.classList.toggle('active', (i === 0 && tab === 'wallet') || (i === 1 && tab === 'transaction'));
+            });
+            document.getElementById('panel-wallet').classList.toggle('active', tab === 'wallet');
+            document.getElementById('panel-transaction').classList.toggle('active', tab === 'transaction');
+        }
+
+        // ── UTILS ────────────────────────────────────────────────────
+        function shortAddr(addr) {
+            if (!addr || addr.length < 10) return addr || 'N/A';
+            return addr.slice(0, 6) + '...' + addr.slice(-4);
+        }
+
+        function timeAgo(timestamp) {
+            const now = Math.floor(Date.now() / 1000);
+            const diff = now - parseInt(timestamp);
+            if (diff < 60)   return diff + 's ago';
+            if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+            if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+            return Math.floor(diff / 86400) + 'd ago';
+        }
+
+        function showError(id, msg) {
+            const el = document.getElementById(id);
+            el.textContent = '⚠  ' + msg;
+            el.classList.add('show');
+        }
+
+        function hideError(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        function setLoading(prefix, on) {
+            document.getElementById(prefix + '-loading').classList.toggle('show', on);
+            document.getElementById(prefix + '-btn').disabled = on;
+        }
+
+        // ── WALLET LOOKUP ────────────────────────────────────────────
+        async function lookupWallet() {
+            const address = document.getElementById('wallet-input').value.trim();
+            hideError('wallet-error');
+            document.getElementById('wallet-results').classList.remove('show');
+
+            if (!address.startsWith('0x') || address.length !== 42) {
+                showError('wallet-error', 'Invalid address. Must be 42 characters starting with 0x.');
+                return;
+            }
+
+            setLoading('wallet', true);
+
+            try {
+                const res = await fetch(`${BACKEND}/api/wallet/${address}`);
+                const data = await res.json();
+
+                if (data.error) {
+                    showError('wallet-error', data.error);
+                    setLoading('wallet', false);
+                    return;
+                }
+
+                // ── Stats ──
+                const ethBal = data.eth_balance !== null
+                    ? parseFloat(data.eth_balance).toFixed(6) + ' ETH'
+                    : 'Unavailable';
+
+                document.getElementById('wallet-stats').innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-label">ETH Balance</div>
+                        <div class="stat-value">${ethBal}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Account Type</div>
+                        <div class="stat-value cyan">${data.is_contract ? 'Smart Contract' : 'Wallet (EOA)'}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Transactions Shown</div>
+                        <div class="stat-value white">${data.transactions.length}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Address</div>
+                        <div class="stat-value white" style="font-size:0.75rem">${address}</div>
+                    </div>
+                `;
+
+                // ── Transactions ──
+                const tbody = document.getElementById('tx-tbody');
+                if (data.transactions.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="color:var(--text-dim);text-align:center;padding:2rem">No transactions found</td></tr>`;
+                } else {
+                    tbody.innerHTML = data.transactions.map(tx => `
+                        <tr>
+                            <td>
+                                <span class="tx-hash" onclick="loadTx('${tx.hash}')" title="${tx.hash}">
+                                    ${shortAddr(tx.hash)}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge ${tx.is_outgoing ? 'badge-out' : 'badge-in'}">
+                                    ${tx.is_outgoing ? 'OUT' : 'IN'}
+                                </span>
+                            </td>
+                            <td>${parseFloat(tx.value_eth).toFixed(6)}</td>
+                            <td class="addr-short">${tx.block || 'Pending'}</td>
+                            <td class="addr-short">${tx.timestamp ? timeAgo(tx.timestamp) : '—'}</td>
+                        </tr>
+                    `).join('');
+                }
+
+                // ── Tokens ──
+                const tokenEl = document.getElementById('token-grid');
+                const tokens = data.token_balances || {};
+                const tokenKeys = Object.keys(tokens);
+
+                if (tokenKeys.length === 0) {
+                    tokenEl.innerHTML = `<div class="no-tokens">No common token balances found (USDC, DAI, WETH, UNI)</div>`;
+                } else {
+                    tokenEl.innerHTML = tokenKeys.map(sym => `
+                        <div class="token-chip">
+                            <span class="t-symbol">${sym}</span>
+                            <span class="t-bal">${parseFloat(tokens[sym]).toLocaleString()}</span>
+                        </div>
+                    `).join('');
+                }
+
+                document.getElementById('wallet-results').classList.add('show');
+
+            } catch (e) {
+                showError('wallet-error', 'Could not reach the backend. Please try again.');
+            }
+
+            setLoading('wallet', false);
+        }
+
+        // ── Load TX from wallet table click ──
+        function loadTx(hash) {
+            switchTab('transaction');
+            document.getElementById('tx-input').value = hash;
+            lookupTransaction();
+        }
+
+        // ── TRANSACTION LOOKUP ───────────────────────────────────────
+        async function lookupTransaction() {
+            const hash = document.getElementById('tx-input').value.trim();
+            hideError('tx-error');
+            document.getElementById('tx-results').classList.remove('show');
+
+            if (!hash.startsWith('0x') || hash.length !== 66) {
+                showError('tx-error', 'Invalid hash. Must be 66 characters starting with 0x.');
+                return;
+            }
+
+            setLoading('tx', true);
+
+            try {
+                const res = await fetch(`${BACKEND}/api/transaction/${hash}`);
+                const data = await res.json();
+
+                if (data.error) {
+                    showError('tx-error', data.error);
+                    setLoading('tx', false);
+                    return;
+                }
+
+                // ── Status badge ──
+                let statusHtml = `<span class="status-badge status-pending">⏳ PENDING</span>`;
+                if (data.status === 'success') statusHtml = `<span class="status-badge status-success">✓ SUCCESS</span>`;
+                if (data.status === 'failed')  statusHtml = `<span class="status-badge status-failed">✗ FAILED</span>`;
+
+                // ── Detail grid ──
+                document.getElementById('tx-detail-grid').innerHTML = `
+                    <div class="detail-row">
+                        <div class="detail-key">Status</div>
+                        <div class="detail-val">${statusHtml}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-key">Block</div>
+                        <div class="detail-val cyan">${data.block || 'Pending'}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-key">From</div>
+                        <div class="detail-val" title="${data.from}">${data.from}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-key">To</div>
+                        <div class="detail-val" title="${data.to}">${data.to}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-key">Value</div>
+                        <div class="detail-val green">${parseFloat(data.value_eth).toFixed(8)} ETH</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-key">Value (Wei)</div>
+                        <div class="detail-val">${parseInt(data.value_wei).toLocaleString()}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-key">Gas Limit</div>
+                        <div class="detail-val">${data.gas_limit ? parseInt(data.gas_limit).toLocaleString() : '—'}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-key">Gas Price</div>
+                        <div class="detail-val yellow">${data.gas_price_gwei ? parseFloat(data.gas_price_gwei).toFixed(2) + ' Gwei' : '—'}</div>
+                    </div>
+                    ${data.gas_used ? `
+                    <div class="detail-row">
+                        <div class="detail-key">Gas Used</div>
+                        <div class="detail-val">${parseInt(data.gas_used).toLocaleString()}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-key">Transaction Fee</div>
+                        <div class="detail-val green">${parseFloat(data.gas_cost_eth).toFixed(8)} ETH</div>
+                    </div>` : ''}
+                    ${data.method_id ? `
+                    <div class="detail-row">
+                        <div class="detail-key">Method ID</div>
+                        <div class="detail-val cyan">${data.method_id}</div>
+                    </div>` : ''}
+                `;
+
+                // ── Input data ──
+                const inputData = data.input_data || '0x';
+                document.getElementById('tx-input-data').textContent =
+                    inputData === '0x' ? '0x  (simple ETH transfer — no contract interaction)' : inputData;
+
+                document.getElementById('tx-results').classList.add('show');
+
+            } catch (e) {
+                showError('tx-error', 'Could not reach the backend. Please try again.');
+            }
+
+            setLoading('tx', false);
+        }
+
+        // ── Enter key support ──
+        document.getElementById('wallet-input').addEventListener('keydown', e => {
+            if (e.key === 'Enter') lookupWallet();
+        });
+        document.getElementById('tx-input').addEventListener('keydown', e => {
+            if (e.key === 'Enter') lookupTransaction();
+        });
+    </script>
+
+</body>
+</html>
