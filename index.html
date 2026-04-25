@@ -736,21 +736,21 @@
                 <!-- Project 2 -->
                 <div class="project-card">
                     <div class="project-image-container">
-                        <img src="images/ProjectPics/pj2_1.webp" alt="PCB 1 Thermal Simulation" class="project-image active" data-project="2">
-                        <img src="images/ProjectPics/pj2_2.webp" alt="PCB 2 Thermal Simulation" class="project-image" data-project="2">
+                        <img src="images/ProjectPics/pj2_1.webp" alt="Automated Blood Bag Sealer" class="project-image active" data-project="2">
+                        <img src="images/ProjectPics/pj2_2.webp" alt="Automated Blood Bag Sealer" class="project-image" data-project="2">
                         <button class="image-nav prev-btn" data-project="2"><i class="fas fa-chevron-left"></i></button>
                         <button class="image-nav next-btn" data-project="2"><i class="fas fa-chevron-right"></i></button>
                         <div class="image-counter"><span class="current-img">1</span>/<span class="total-img">2</span></div>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title"><a href="project-details.html">PCB Thermal Optimization</a></h3>
-                        <p class="project-description">Modeled and performed Temperature and Heat Flux Optimization of PCB using ANSYS Mechanical and Workbench. Reduced max Temperature of PCB by 35%. Reduced Heat Flux through critical components by 57%.
+                        <h3 class="project-title"><a href="project-details.html">Automated Blood Bag Sealer</a></h3>
+                        <p class="project-description"> Designed and fabricated an automated blood bag sealer using an Arduino, microservos, and custom wiring on a Screw Terminal Proto Shield. The system uses a Logic Level MOSFET to control the sealer motor sequence for full digital control. Mechanical and Thermal Analysis was performed in order to validate gear ratios and heating of Blood Bag Components.
                         </p>
                         <div class="project-tech">
                             <span class="tech-tag">Thermal Analysis</span>
-                            <span class="tech-tag">Data Analysis</span>
-                            <span class="tech-tag">Electronics</span>
-                            <span class="tech-tag">Multi-Physics Simulation</span>
+                            <span class="tech-tag">Finite Element Analysis</span>
+                            <span class="tech-tag">Electronics/Hardware</span>
+                            <span class="tech-tag">Mechanical Design</span>
                         </div>
                     </div>
                 </div>
@@ -765,14 +765,14 @@
                         <div class="image-counter"><span class="current-img">1</span>/<span class="total-img">2</span></div>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title"><a href="project-details.html">Motor Controller Simulation</a></h3>
+                        <h3 class="project-title"><a href="project-details.html">Mechanical System Characterization</a></h3>
                         <p class="project-description">
-                            Implemented a fault-tolerant motor controller in C with documented loop invariants. Designed a real-time telemetry system using circular buffers and lossless compression </p>
+                            Characterized rectilinear and torsional second degree of freedom systems using motor encoders and initial condition experiments. Simulated open and closed loop controllers using MATLAB, optimizing for reduced overshoot, steady state error, settling time, and rise time. Implemented Fast Fourier Transform and ODE45 in MATLAB to simulate the physical system and validate the controller performance.</p>
                         <div class="project-tech">
-                            <span class="tech-tag">Data Structures</span>
-                            <span class="tech-tag">Real-Time Monitoring</span>
-                            <span class="tech-tag">STM32 Protocol</span>
-                            <span class="tech-tag">Simulation & Data Analysis</span>
+                            <span class="tech-tag">Engineering Data Analysis</span>
+                            <span class="tech-tag">MATLAB</span>
+                            <span class="tech-tag">PID Control</span>
+                            <span class="tech-tag">Fast Fourier Transform/ODE Simulation</span>
                         </div>
                     </div>
                 </div>
@@ -956,6 +956,45 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Project 9 NBA Model -->
+
+                <div class="project-card">
+                    <div class="project-image-container">
+                        <img src="images/ProjectPics/running1.png" alt="NBA Model" class="project-image active" data-project="8">
+                        <img src="images/ProjectPics/running2.png" alt="Running Tracker" class="project-image active" data-project="8">
+                        <img src="images/ProjectPics/running3.png" alt="Running Tracker" class="project-image active" data-project="8">
+                        <button class="image-nav prev-btn" data-project="7"><i class="fas fa-chevron-left"></i></button>
+                        <button class="image-nav next-btn" data-project="7"><i class="fas fa-chevron-right"></i></button>
+                        <div class="image-counter"><span class="current-img">1</span>/<span class="total-img">3</span></div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">NBA Data Model</h3>
+                        <p class="project-description"> Web Application built with Python, and SQLite to model NBA data for 2020-2026 regular seasons. Individual seasons are able to be selected and individual statistics for each game are displayed. Intended to be used as a data source for a machine learning model. </p>
+                        <div class="project-links">
+                            <a href="https://jorgecastano1.github.io/NBAModel/viz/index.html" 
+                            class="project-link" 
+                            target="_blank" 
+                            rel="noopener noreferrer">
+                            <i class="fas fa-music"></i> Live Demo
+                            </a>
+                            <a href="https://github.com/jorgecastano1/NBAModel" 
+                            class="project-link github-link" 
+                            target="_blank" 
+                            rel="noopener noreferrer">
+                            <i class="fab fa-github"></i> View Code
+                            </a>
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">SQLite</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Data Visualization</span>
+                            <span class="tech-tag">Statistics</span>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </section>
