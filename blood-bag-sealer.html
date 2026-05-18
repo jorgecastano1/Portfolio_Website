@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Blood Bag Sealer | Jorge Castano</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #0d3b66;
+            --text-dark: #0d3b66;
+            --text-light: #5a6b7f;
+            --background: #fdfdfe;
+            --card-bg: #faf8f0;
+            --shadow: rgba(13, 59, 102, 0.12);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--background);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px var(--shadow);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-inner {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Roboto Slab', serif;
+            font-weight: 500;
+            font-size: 1.25rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-back {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .nav-back:hover { color: var(--primary); }
+
+        main {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 7rem 0 4rem;
+        }
+
+        .project-header h1 {
+            font-family: 'Roboto Slab', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-header p {
+            color: var(--text-light);
+            max-width: 800px;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .tech-tag {
+            background-color: var(--card-bg);
+            color: var(--primary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item img.contain {
+            object-fit: contain;
+            background: #f5f5f5;
+        }
+
+        .gallery-caption {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(13, 59, 102, 0.92);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .lightbox.active { display: flex; }
+
+        .lightbox img {
+            max-width: 95%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .lightbox-close,
+        .lightbox-prev,
+        .lightbox-next {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .lightbox-close:hover,
+        .lightbox-prev:hover,
+        .lightbox-next:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .lightbox-close { top: 1.5rem; right: 1.5rem; }
+        .lightbox-prev { left: 1.5rem; top: 50%; transform: translateY(-50%); }
+        .lightbox-next { right: 1.5rem; top: 50%; transform: translateY(-50%); }
+
+        @media (max-width: 576px) {
+            .project-header h1 { font-size: 1.5rem; }
+            .gallery { grid-template-columns: 1fr; }
+            .lightbox-prev { left: 0.5rem; }
+            .lightbox-next { right: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">Jorge Castano</a>
+            <a href="index.html#projects" class="nav-back"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+        </div>
+    </nav>
+
+    <main>
+        <header class="project-header">
+            <h1>Automated Blood Bag Sealer</h1>
+            <p>Designed and fabricated an automated blood bag sealer using an Arduino, microservos, and custom wiring on a Screw Terminal Proto Shield. The system uses a Logic Level MOSFET to control the sealer motor sequence for full digital control. Mechanical and Thermal Analysis was performed in order to validate gear ratios and heating of Blood Bag Components.</p>
+            <div class="project-tech">
+                <span class="tech-tag">Thermal Analysis</span>
+                <span class="tech-tag">Finite Element Analysis</span>
+                <span class="tech-tag">Electronics/Hardware</span>
+                <span class="tech-tag">Mechanical Design</span>
+            </div>
+        </header>
+
+        <div class="gallery" id="gallery">
+            <figure class="gallery-item" data-index="0">
+                <img src="images/bloodBagPics/bloodBagHousing.png" alt="Blood Bag Housing">
+                <figcaption class="gallery-caption">Blood Bag Housing</figcaption>
+            </figure>
+            <figure class="gallery-item" data-index="1">
+                <img src="images/bloodBagPics/builtAssembly.png" alt="Built Assembly">
+                <figcaption class="gallery-caption">Built Assembly</figcaption>
+            </figure>
+            <figure class="gallery-item" data-index="2">
+                <img src="images/bloodBagPics/buckConverters.png" alt="Electronics">
+                <figcaption class="gallery-caption">Electronics</figcaption>
+            </figure>
+            <figure class="gallery-item" data-index="3">
+                <img class="contain" src="images/bloodBagPics/electricalSchematic.png" alt="KiCad Schematic">
+                <figcaption class="gallery-caption">KiCad Schematic</figcaption>
+            </figure>
+            <figure class="gallery-item" data-index="4">
+                <img src="images/bloodBagPics/gantry1.png" alt="Mechanical Gantry 1">
+                <figcaption class="gallery-caption">Mechanical Gantry 1</figcaption>
+            </figure>
+            <figure class="gallery-item" data-index="5">
+                <img src="images/bloodBagPics/gantry2.png" alt="Mechanical Gantry 2">
+                <figcaption class="gallery-caption">Mechanical Gantry 2</figcaption>
+            </figure>
+            <figure class="gallery-item" data-index="6">
+                <img class="contain" src="images/bloodBagPics/gearAnalysis1.png" alt="Gear Analysis 1">
+                <figcaption class="gallery-caption">Gear Analysis 1</figcaption>
+            </figure>
+            <figure class="gallery-item" data-index="7">
+                <img class="contain" src="images/bloodBagPics/gearAnalysis2.png" alt="Gear Analysis 2">
+                <figcaption class="gallery-caption">Gear Analysis 2</figcaption>
+            </figure>
+            <figure class="gallery-item" data-index="8">
+                <img class="contain" src="images/bloodBagPics/thermalAnalysis.png" alt="Thermal Analysis">
+                <figcaption class="gallery-caption">Thermal Analysis</figcaption>
+            </figure>
+        </div>
+    </main>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close"><i class="fas fa-times"></i></button>
+        <button class="lightbox-prev" id="lightbox-prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+        <img id="lightbox-img" src="" alt="">
+        <button class="lightbox-next" id="lightbox-next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+        <p class="lightbox-caption" id="lightbox-caption"></p>
+    </div>
+
+    <script>
+        const items = Array.from(document.querySelectorAll('.gallery-item'));
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            const item = items[index];
+            const img = item.querySelector('img');
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightboxCaption.textContent = item.querySelector('.gallery-caption').textContent;
+            lightbox.classList.add('active');
+            lightbox.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            lightbox.setAttribute('aria-hidden', 'true');
+        }
+
+        function showPrev() {
+            openLightbox((currentIndex - 1 + items.length) % items.length);
+        }
+
+        function showNext() {
+            openLightbox((currentIndex + 1) % items.length);
+        }
+
+        items.forEach((item, i) => item.addEventListener('click', () => openLightbox(i)));
+        document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+        document.getElementById('lightbox-prev').addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+        document.getElementById('lightbox-next').addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') showPrev();
+            if (e.key === 'ArrowRight') showNext();
+        });
+    </script>
+</body>
+</html>
